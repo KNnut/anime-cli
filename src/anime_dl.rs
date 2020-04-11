@@ -158,8 +158,10 @@ pub fn connect_and_download(request: IRCRequest, channel_senders: Vec<Sender<i64
                         let req = requests[i].clone();
                         let sender = channel_senders[i].clone();
                         let path = dir_path.clone();
+                        let status_bar_sender_clone = status_bar_sender.clone();
                         let handle = thread::spawn(move || {
                             download_file(req, sender, path).expect("Failed to download.");
+                            status_bar_sender_clone.send("Episode Finished Downloading".to_string()).unwrap();
                         });
                         download_handles.push(handle);
                         i += 1;
@@ -171,8 +173,10 @@ pub fn connect_and_download(request: IRCRequest, channel_senders: Vec<Sender<i64
                     let req = requests[i].clone();
                     let sender = channel_senders[i].clone();
                     let path = dir_path.clone();
+                    let status_bar_sender_clone = status_bar_sender.clone();
                     let handle = thread::spawn(move || {
                         download_file(req, sender, path).expect("Failed to download.");
+                        status_bar_sender_clone.send("Episode Finished Downloading".to_string()).unwrap();
                     });
                     download_handles.push(handle);
                     i += 1;
